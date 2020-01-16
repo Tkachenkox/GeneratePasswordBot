@@ -36,12 +36,27 @@ async def generate_p(message: types.Message):
 
 #generate string
 def generate(length):
-    helper_eng = 'qwertyuiopasdfghjklzxcvbnm1234567890'
+    if int(length) < 4:
+        return 'To short password.'
+    check_for_digit = False
+    helper_letters = 'qwertyuiopasdfghjklzxcvbnm'
+    helper_digits = '1234567890'
     final_str = ''
     while len(final_str) < int(length):
-        ch = random.randint(0, len(helper_eng) - 1)
-        final_str += helper_eng[ch]
+        if random.random() > 0.5:
+            if len(final_str) == (int(length) - 1) and check_for_digit == False:
+                continue
+            ch = random.randint(0, len(helper_letters) - 1)
+            if random.random() > 0.5:
+                final_str += helper_letters[ch].upper()
+            else:
+                final_str += helper_letters[ch]
+        else:
+            check_for_digit = True
+            ch = random.randint(0, len(helper_digits) - 1)
+            final_str += helper_digits[ch]
     return final_str
+
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)

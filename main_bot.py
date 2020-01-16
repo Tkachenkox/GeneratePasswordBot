@@ -27,17 +27,18 @@ async def send_help(message: types.Message):
 async def generate_p(message: types.Message):
     length = message['text']
     if length.isdigit():
-        password = generate(length)
-        #format message
-        msg = text('Your password - ', pre(password))
-        await message.reply(msg, parse_mode=ParseMode.MARKDOWN)
+        if int(length) < 4:
+            await message.reply("Too short password!")
+        else:
+            password = generate(length)
+            #format message
+            msg = text('Your password - ', pre(password))
+            await message.reply(msg, parse_mode=ParseMode.MARKDOWN)
     else:
-        await message.reply('Not correct length')
+        await message.reply('Not correct length! Its might be digit without letters!')
 
 #generate string
 def generate(length):
-    if int(length) < 4:
-        return 'To short password.'
     check_for_digit = False
     helper_letters = 'qwertyuiopasdfghjklzxcvbnm'
     helper_digits = '1234567890'
